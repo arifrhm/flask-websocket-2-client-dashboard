@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulated Smartband</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+</head>
+<body>
+
+<script>
+    // Mock user credentials
+    const username = 'your_username';
+    const password = 'your_password';
+
+    // Authenticate and obtain the token
+    fetch('http://localhost:5000/authenticate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const userToken = data.token;
+        console.log(userToken);
+
+        // Connect to the /dashboard namespace with the obtained token
+        const dashboardSocket = io.connect('http://localhost:5000/dashboard', { query: { token: userToken } });
+
+        // Mock smartband data (replace this with actual smartband data)
+        setInterval(() => {
+            const smartbandData = {
+                heartRate: Math.floor(Math.random() * 100), // Generate a random number between 0 and 100 for heartRate
+                steps: Math.floor(Math.random() * 10000), // Generate a random number between 0 and 10000 for steps
+                temperature: Math.random() * (40 - 35) + 35, // Generate a random number between 35 and 40 for temperature
+            };
+
+            // Send smartband data to the server
+            dashboardSocket.emit('smartband_data', { data: smartbandData, token: userToken });
+        }, 1000); // Update the values every 1000 milliseconds (1 second)
+            });
+</script>
+
+</body>
+</html>
