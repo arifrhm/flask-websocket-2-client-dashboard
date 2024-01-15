@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+</head>
+<body>
+
+<div>
+    <h1>Real-time Dashboard</h1>
+    <div id="dashboard">
+        <p id="heartRate">Heart Rate: </p>
+        <p id="steps">Steps: </p>
+        <p id="temperature">Temperature: </p>
+    </div>
+</div>
+
+<script>
+    const socket = io.connect('http://localhost:5000/dashboard');
+
+    // Mock user credentials
+    const username = 'your_username';
+    const password = 'your_password';
+
+    // Authenticate and obtain the token
+    fetch('http://localhost:5000/authenticate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const userToken = data.token;
+
+        // Connect to the /dashboard namespace with the obtained token
+        const dashboardSocket = io.connect('http://localhost:5000/dashboard', { query: { token: userToken } });
+
+        // Handle dashboard updates
+        dashboardSocket.on('update_dashboard', function (message) {
+            let data = message.data;
+            // Update dashboard UI with the received data
+            document.getElementById('heartRate').innerText = `Heart Rate: ${data.heartRate}`;
+            document.getElementById('steps').innerText = `Steps: ${data.steps}`;
+            document.getElementById('temperature').innerText = `Temperature: ${data.temperature}`;
+        });
+    });
+</script>
+
+</body>
+</html>
