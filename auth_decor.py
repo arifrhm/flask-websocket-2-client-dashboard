@@ -13,7 +13,7 @@ def authenticate_token(func):
         try:
             decoded = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
             user_id = decoded['sub']
-            print(f'{users[user_id]["username"]} connected to /dashboard')
+            print(f'{users[user_id]["username"]} connected to /report')
             return func(*args, **kwargs)
         except jwt.ExpiredSignatureError:
             return False

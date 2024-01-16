@@ -42,16 +42,17 @@ def handle_authentication():
         return jsonify({'error': 'Invalid credentials'}), 401
 
 
-@socketio.on('connect', namespace='/dashboard')
+@socketio.on('connect', namespace='/report')
 @authenticate_token
 def handle_connect():
     print(f"{request.sid} Connected !!!!!!!")
 
-@socketio.on('smartband_data', namespace='/dashboard')
+@socketio.on('smartband_data', namespace='/report')
 @authenticate_token
 def handle_smartband_data(data):
-    print("Emitting to update_dashboard listeners with namespace /dashboard")
-    emit('update_dashboard', data, broadcast=True, namespace='/dashboard')
+    print("Emitting to update_dashboard listeners with namespace /report")
+    print(data)
+    emit('update_dashboard', data, broadcast=True, namespace='/report')
     print("Emitted !!!!")
 
 if __name__ == '__main__':

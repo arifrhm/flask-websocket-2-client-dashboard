@@ -56,7 +56,6 @@
 </div>
 
 <script>
-    const socket = io.connect('http://localhost:5000/dashboard');
 
     // Mock user credentials
     const username = 'your_username';
@@ -78,11 +77,12 @@
         const userToken = data.token;
 
         // Connect to the /dashboard namespace with the obtained token
-        const dashboardSocket = io.connect('http://localhost:5000/dashboard', { query: { token: userToken } });
-
+        const dashboardSocket = io.connect('http://localhost:5000/report', { query: { token: userToken } });
+        console.log(dashboardSocket);
         // Handle dashboard updates
         dashboardSocket.on('update_dashboard', function (message) {
             let data = message.data;
+            console.log(JSON.stringify(message));
             // Update dashboard UI with the received data
             document.getElementById('heartRate').innerText = `Heart Rate: ${data.heartRate}`;
             document.getElementById('steps').innerText = `Steps: ${data.steps}`;

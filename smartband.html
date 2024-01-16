@@ -30,7 +30,7 @@
         console.log(userToken);
 
         // Connect to the /dashboard namespace with the obtained token
-        const dashboardSocket = io.connect('http://localhost:5000/dashboard', { query: { token: userToken } });
+        const dashboardSocket = io.connect('http://localhost:5000/report', { query: { token: userToken } });
 
         // Mock smartband data (replace this with actual smartband data)
         setInterval(() => {
@@ -42,8 +42,13 @@
 
             // Send smartband data to the server
             dashboardSocket.emit('smartband_data', { data: smartbandData, token: userToken });
+            dashboardSocket.on('update_dashboard', (data)=> {
+            console.log(JSON.stringify(data));
+        })
         }, 1000); // Update the values every 1000 milliseconds (1 second)
             });
+
+           
 </script>
 
 </body>
