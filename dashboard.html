@@ -24,7 +24,7 @@
     const password = 'admin';
 
     // Authenticate and obtain the token
-    fetch('http://38.47.76.208:5010/sb/login', {
+    fetch('http://localhost:5010/sb/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -40,11 +40,12 @@
         console.log(data);
 
         // Connect to the /dashboard namespace with the obtained token
-        const dashboardSocket = io.connect('http://38.47.76.208:5010/report', { query: { token: userToken } });
+        const dashboardSocket = io.connect('http://localhost:5010/report', { auth: { token: userToken } });
 
         // Handle dashboard updates
         dashboardSocket.on('update_dashboard', function (message) {
             let data = message.data;
+            console.log(data);
             // Update dashboard UI with the received data
             document.getElementById('heartRate').innerText = `Heart Rate: ${data.heartRate}`;
             document.getElementById('steps').innerText = `Steps: ${data.steps}`;

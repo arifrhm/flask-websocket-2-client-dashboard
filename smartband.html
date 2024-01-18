@@ -34,8 +34,12 @@
 
         // Mock smartband data (replace this with actual smartband data)
         setInterval(() => {
+            const now = new Date();
+            const day = now.getDay(); // returns a number representing the day of the week, starting with 0 for Sunday
+            const hours = now.getHours();
             const smartbandData = {
-                heartRate: Math.floor(Math.random() * 100), // Generate a random number between 0 and 100 for heartRate
+                heartRate: Math.floor(Math.random() * 100),
+                time:  hours// Generate a random number between 0 and 100 for heartRate
                 // steps: Math.floor(Math.random() * 10000), // Generate a random number between 0 and 10000 for steps
                 // temperature: Math.random() * (40 - 35) + 35, // Generate a random number between 35 and 40 for temperature
             };

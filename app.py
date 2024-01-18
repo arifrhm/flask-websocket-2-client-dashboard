@@ -36,6 +36,10 @@ def generate_token(user_id):
 def smartband():
     return render_template('smartband.html')
 
+@app.route('/smartband-auth')
+def smartband_auth():
+    return render_template('smartband-auth.html')
+
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html')
