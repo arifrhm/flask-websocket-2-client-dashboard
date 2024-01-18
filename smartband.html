@@ -10,11 +10,11 @@
 
 <script>
     // Mock user credentials
-    const username = 'your_username';
-    const password = 'your_password';
+    const username = 'admin';
+    const password = 'admin';
 
     // Authenticate and obtain the token
-    fetch('http://localhost:5000/authenticate', {
+    fetch('http://38.47.76.208:5010/sb/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -26,18 +26,18 @@
     })
     .then(response => response.json())
     .then(data => {
-        const userToken = data.token;
-        console.log(userToken);
+        const userToken = data.data.token;
+        console.log(data);
 
         // Connect to the /dashboard namespace with the obtained token
-        const dashboardSocket = io.connect('http://localhost:5000/dashboard', { query: { token: userToken } });
+        const dashboardSocket = io.connect('http://38.47.76.208:5010/report', { query: { token: userToken } });
 
         // Mock smartband data (replace this with actual smartband data)
         setInterval(() => {
             const smartbandData = {
                 heartRate: Math.floor(Math.random() * 100), // Generate a random number between 0 and 100 for heartRate
-                steps: Math.floor(Math.random() * 10000), // Generate a random number between 0 and 10000 for steps
-                temperature: Math.random() * (40 - 35) + 35, // Generate a random number between 35 and 40 for temperature
+                // steps: Math.floor(Math.random() * 10000), // Generate a random number between 0 and 10000 for steps
+                // temperature: Math.random() * (40 - 35) + 35, // Generate a random number between 35 and 40 for temperature
             };
 
             // Send smartband data to the server

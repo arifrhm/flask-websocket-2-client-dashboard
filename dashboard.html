@@ -18,14 +18,13 @@
 </div>
 
 <script>
-    const socket = io.connect('http://localhost:5000/dashboard');
 
     // Mock user credentials
-    const username = 'your_username';
-    const password = 'your_password';
+    const username = 'admin';
+    const password = 'admin';
 
     // Authenticate and obtain the token
-    fetch('http://localhost:5000/authenticate', {
+    fetch('http://38.47.76.208:5010/sb/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -37,10 +36,11 @@
     })
     .then(response => response.json())
     .then(data => {
-        const userToken = data.token;
+        const userToken = data.data.token;
+        console.log(data);
 
         // Connect to the /dashboard namespace with the obtained token
-        const dashboardSocket = io.connect('http://localhost:5000/dashboard', { query: { token: userToken } });
+        const dashboardSocket = io.connect('http://38.47.76.208:5010/report', { query: { token: userToken } });
 
         // Handle dashboard updates
         dashboardSocket.on('update_dashboard', function (message) {
