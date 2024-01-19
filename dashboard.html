@@ -41,7 +41,7 @@
 
         // Connect to the /dashboard namespace with the obtained token
         const dashboardSocket = io.connect('http://localhost:5010/report', { auth: { token: userToken } });
-
+        dashboardSocket.on('message_')
         // Handle dashboard updates
         dashboardSocket.on('update_dashboard', function (message) {
             let data = message.data;

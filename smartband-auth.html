@@ -38,22 +38,38 @@
                         token: userToken
                     },
                 });
+                // dashboardSocket.on('connect', () => {
+                //     dashboardSocket.to("news").emit("hello");
+                //     // Once connected, emit the "join_room" event
+                //     const room = userToken.split(' ')[1]
+                //     console.log(room);
+                //     socket.emit('join', roomName);
 
+                //     // // and then later
+                //     // io.to(room).emit("hi Everyon else in :" + token);
+                // });
+                dashboardSocket.emit('join', { token: userToken });
+
+                dashboardSocket.on('update_dashboard',(data)=>{
+                    console.log('update_dashboard :',data);
+                })
+
+                dashboardSocket.on('room_join_message', (data)=>{
+                    console.log('room_join_message :',data);
+                })
                 // Mock smartband data (replace this with actual smartband data)
                 setInterval(() => {
                     const now = new Date();
-                    const day = now.getDay(); // returns a number representing the day of the week, starting with 0 for Sunday
+                    const day = now.getDay();
                     const hours = now.getHours();
                     const smartbandData = {
                         heartRate: Math.floor(Math.random() * 100),
-                        time: hours// Generate a random number between 0 and 100 for heartRate
-                        // steps: Math.floor(Math.random() * 10000), // Generate a random number between 0 and 10000 for steps
-                        // temperature: Math.random() * (40 - 35) + 35, // Generate a random number between 35 and 40 for temperature
+                        time: hours
                     };
 
                     // Send smartband data to the server
                     dashboardSocket.emit('smartband_data', { data: smartbandData, token: userToken });
-                }, 1000); // Update the values every 1000 milliseconds (1 second)
+                }, 1000);
             });
     </script>
 
